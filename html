@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>活動報名頁面</title>
+  <title>校園活動報名</title>
   <link href="https://fonts.googleapis.com/css?family=Noto+Sans+TC:400,700&display=swap" rel="stylesheet">
   <style>
     body {
@@ -21,7 +21,7 @@
       border-radius: 18px;
       box-shadow: 0 6px 24px rgba(60, 72, 88, 0.10);
       padding: 2.5rem 2rem 2rem 2rem;
-      max-width: 480px;
+      max-width: 520px;
       width: 100%;
       text-align: center;
       position: relative;
@@ -36,19 +36,102 @@
       object-fit: cover;
       box-shadow: 0 2px 12px rgba(60, 72, 88, 0.10);
     }
-    h1 {
-      color: #374151;
-      margin-bottom: 0.5rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      font-size: 2rem;
-    }
-    .activity-title {
-      color: #4b5563;
-      font-size: 1.1rem;
+    .tabs {
+      display: flex;
+      justify-content: center;
       margin-bottom: 1.5rem;
-      font-weight: 500;
+      gap: 1rem;
     }
+    .tab-btn {
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #6366f1;
+      padding: 0.5rem 1.5rem;
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      transition: border 0.2s, color 0.2s;
+    }
+    .tab-btn.active {
+      border-bottom: 3px solid #6366f1;
+      color: #374151;
+    }
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.4s;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    .activity-list {
+      text-align: left;
+      margin: 0 auto 1.5rem auto;
+      max-width: 400px;
+    }
+    .activity-item {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 1px 8px rgba(99, 102, 241, 0.07);
+      margin-bottom: 1rem;
+      padding: 1rem 1.2rem;
+      border: 1.5px solid #cbd5e1;
+    }
+    .activity-item-title {
+      font-weight: 700;
+      color: #374151;
+      margin-bottom: 0.3rem;
+    }
+    .activity-item-desc {
+      color: #4b5563;
+      font-size: 0.98rem;
+      margin-bottom: 0.5rem;
+    }
+    .activity-item-btn {
+      background: #6366f1;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 18px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    .activity-item-btn:hover {
+      background: #4f46e5;
+    }
+    .activity-detail {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 1px 8px rgba(99, 102, 241, 0.07);
+      margin-bottom: 1rem;
+      padding: 1rem 1.2rem;
+      border: 1.5px solid #cbd5e1;
+      color: #374151;
+      text-align: left;
+      display: none;
+      position: relative;
+    }
+    .activity-detail.active {
+      display: block;
+      animation: fadeIn 0.4s;
+    }
+    .close-detail {
+      position: absolute;
+      top: 10px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      color: #64748b;
+      cursor: pointer;
+    }
+    /* 其餘表單樣式同前略 */
     .form-group {
       margin-bottom: 1.2rem;
       text-align: left;
@@ -87,7 +170,7 @@
       font-size: 1rem;
       color: #374151;
     }
-    button, .intro-btn {
+    button[type="submit"] {
       width: 100%;
       padding: 12px 0;
       background: linear-gradient(90deg, #6366f1 0%, #64748b 100%);
@@ -102,17 +185,6 @@
       margin-top: 0.5rem;
       letter-spacing: 1px;
     }
-    .intro-btn {
-      width: auto;
-      padding: 6px 16px;
-      font-size: 0.95rem;
-      margin-left: 10px;
-      margin-top: 0;
-      background: #c7d2fe;
-      color: #374151;
-      box-shadow: none;
-      border: 1px solid #a5b4fc;
-    }
     button:disabled {
       background: #cbd5e1;
       cursor: not-allowed;
@@ -124,143 +196,160 @@
       font-size: 1.05rem;
       color: #374151;
     }
-    .success {
-      color: #15803d;
-    }
-    .error {
-      color: #dc2626;
-    }
-    .info-list {
-      background: #e0e7ef;
-      border-radius: 8px;
-      padding: 1rem 1.2rem;
-      margin-bottom: 1.5rem;
-      text-align: left;
-      color: #374151;
-      font-size: 0.98rem;
-      box-shadow: 0 1px 4px rgba(99, 102, 241, 0.04);
-    }
-    .info-list ul {
-      margin: 0.2rem 0 0 1.2rem;
-      padding: 0;
-    }
-    .info-list li {
-      margin-bottom: 0.3rem;
-      line-height: 1.6;
-    }
-    .activity-intro {
-      background: #fff;
-      border: 1.5px solid #cbd5e1;
-      border-radius: 10px;
-      padding: 1rem 1.2rem;
-      margin: 1rem 0;
-      color: #374151;
-      font-size: 1rem;
-      text-align: left;
-      display: none;
-      box-shadow: 0 1px 8px rgba(99, 102, 241, 0.07);
-    }
-    .activity-intro.active {
-      display: block;
-      animation: fadeIn 0.4s;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px);}
-      to { opacity: 1; transform: translateY(0);}
-    }
-    @media (max-width: 480px) {
-      .container {
-        padding: 1.2rem 0.5rem 1rem 0.5rem;
-      }
-      .top-illustration {
-        width: 100%;
-        max-width: 100%;
-      }
-    }
+    .success { color: #15803d; }
+    .error { color: #dc2626; }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- 上方插圖 -->
     <img class="top-illustration" src="C:\Users\kitty\Desktop\下載.png" alt="活動插圖">
-    <h1>校園活動報名</h1>
-    <div class="activity-title">請選擇您要報名的活動</div>
-    <div class="info-list">
-      <strong>報名須知：</strong>
-      <ul>
-        <li>每個 Email 僅能報名一場活動。</li>
-        <li>報名成功後，通知信將寄送至您的信箱。</li>
-        <li>如遇額滿或重複報名，系統會自動提示。</li>
-        <li>請確認您的 Email 正確無誤。</li>
-      </ul>
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="list">活動一覽</button>
+      <button class="tab-btn" data-tab="register">我要報名</button>
     </div>
-    <div class="form-group">
-      <label for="activity">活動名稱</label>
-      <div style="display: flex; align-items: center;">
-        <select id="activity" style="flex:1;">
-          <option value="123456">暑期線上讀書會</option>
-          <option value="234567">AI 程式設計體驗營</option>
-          <option value="345678">職涯發展講座</option>
-          <option value="456789">創業分享論壇</option>
-          <option value="567890">少女心手作課</option>
-          <option value="678901">甜點烘焙體驗</option>
-        </select>
-        <button type="button" class="intro-btn" id="showIntroBtn">查看介紹</button>
-      </div>
+    <!-- 活動一覽分頁 -->
+    <div class="tab-content active" id="tab-list">
+      <div class="activity-list" id="activityList"></div>
+      <div id="activityDetail" class="activity-detail"></div>
     </div>
-    <div id="activityIntro" class="activity-intro"></div>
-    <form id="registerForm" autocomplete="off">
-      <div class="form-group">
-        <label for="name">姓名</label>
-        <input type="text" id="name" placeholder="請輸入您的姓名" required />
-      </div>
-      <div class="form-group">
-        <label for="department">系級</label>
-        <input type="text" id="department" placeholder="請輸入您的系級" required />
-      </div>
-      <div class="form-group">
-        <label for="studentId">學號</label>
-        <input type="text" id="studentId" placeholder="請輸入您的學號" required />
-      </div>
-      <div class="form-group gender-group">
-        <label>性別</label>
-        <label><input type="radio" name="gender" value="男" required> 男</label>
-        <label><input type="radio" name="gender" value="女" required> 女</label>
-        <label><input type="radio" name="gender" value="其他" required> 其他</label>
-      </div>
-      <div class="form-group">
-        <label for="email">Email（報名通知將寄送至此信箱）</label>
-        <input type="email" id="email" placeholder="請輸入您的 Email" required />
-      </div>
-      <button id="registerBtn" type="submit">我要報名</button>
-      <div id="message"></div>
-    </form>
+    <!-- 報名分頁 -->
+    <div class="tab-content" id="tab-register">
+      <form id="registerForm" autocomplete="off">
+        <div class="form-group">
+          <label for="activity">活動名稱</label>
+          <select id="activity" required>
+            <option value="123456">暑期線上讀書會</option>
+            <option value="234567">AI 程式設計體驗營</option>
+            <option value="345678">職涯發展講座</option>
+            <option value="456789">創業分享論壇</option>
+            <option value="567890">少女心手作課</option>
+            <option value="678901">甜點烘焙體驗</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="name">姓名</label>
+          <input type="text" id="name" placeholder="請輸入您的姓名" required />
+        </div>
+        <div class="form-group">
+          <label for="department">系級</label>
+          <input type="text" id="department" placeholder="請輸入您的系級" required />
+        </div>
+        <div class="form-group">
+          <label for="studentId">學號</label>
+          <input type="text" id="studentId" placeholder="請輸入您的學號" required />
+        </div>
+        <div class="form-group gender-group">
+          <label>性別</label>
+          <label><input type="radio" name="gender" value="男" required> 男</label>
+          <label><input type="radio" name="gender" value="女" required> 女</label>
+          <label><input type="radio" name="gender" value="其他" required> 其他</label>
+        </div>
+        <div class="form-group">
+          <label for="email">Email（報名通知將寄送至此信箱）</label>
+          <input type="email" id="email" placeholder="請輸入您的 Email" required />
+        </div>
+        <button id="registerBtn" type="submit">我要報名</button>
+        <div id="message"></div>
+      </form>
+    </div>
   </div>
   <script>
-    // 活動介紹資料
-    const activityDescriptions = {
-      "123456": "暑期線上讀書會：一起線上閱讀經典書籍，分享心得，提升自我！",
-      "234567": "AI 程式設計體驗營：零基礎入門，帶你認識人工智慧與程式設計的樂趣。",
-      "345678": "職涯發展講座：邀請業界講師，分享職涯規劃與面試技巧。",
-      "456789": "創業分享論壇：創業家現身說法，啟發你的創業夢想。",
-      "567890": "少女心手作課：親手製作可愛小物，享受療癒時光。",
-      "678901": "甜點烘焙體驗：動手做甜點，品嚐幸福滋味。"
+    // 活動資料
+    const activities = [
+      {
+        id: "123456",
+        title: "暑期線上讀書會",
+        desc: "一起線上閱讀經典書籍，分享心得，提升自我！",
+        detail: "本活動將於暑假期間每週舉辦一次線上讀書會，邀請同學們共讀經典書籍，並進行心得分享與討論。"
+      },
+      {
+        id: "234567",
+        title: "AI 程式設計體驗營",
+        desc: "零基礎入門，帶你認識人工智慧與程式設計的樂趣。",
+        detail: "由專業講師帶領，從零開始學習 AI 與程式設計，適合完全沒基礎的同學參加。"
+      },
+      {
+        id: "345678",
+        title: "職涯發展講座",
+        desc: "邀請業界講師，分享職涯規劃與面試技巧。",
+        detail: "邀請多位業界前輩，分享職涯發展經驗、面試技巧與履歷撰寫建議，助你職場順利起步。"
+      },
+      {
+        id: "456789",
+        title: "創業分享論壇",
+        desc: "創業家現身說法，啟發你的創業夢想。",
+        detail: "多位創業家現身說法，分享創業歷程與心路歷程，激發你的創業潛能。"
+      },
+      {
+        id: "567890",
+        title: "少女心手作課",
+        desc: "親手製作可愛小物，享受療癒時光。",
+        detail: "課程內容包含多種手作小物，適合想放鬆心情、享受手作樂趣的你。"
+      },
+      {
+        id: "678901",
+        title: "甜點烘焙體驗",
+        desc: "動手做甜點，品嚐幸福滋味。",
+        detail: "由專業烘焙師指導，親手製作各式甜點，體驗烘焙的樂趣與成就感。"
+      }
+    ];
+
+    // 動態產生活動一覽
+    const activityListDiv = document.getElementById('activityList');
+    const activityDetailDiv = document.getElementById('activityDetail');
+    activities.forEach(act => {
+      const div = document.createElement('div');
+      div.className = 'activity-item';
+      div.innerHTML = `
+        <div class="activity-item-title">${act.title}</div>
+        <div class="activity-item-desc">${act.desc}</div>
+        <button class="activity-item-btn" type="button">查看介紹</button>
+        <button class="activity-item-btn" type="button" style="margin-left:10px;background:#64748b;" onclick="switchToRegister('${act.id}')">立即報名</button>
+      `;
+      // 查看介紹按鈕事件
+      div.querySelectorAll('.activity-item-btn')[0].addEventListener('click', function() {
+        activityDetailDiv.innerHTML = `
+          <button class="close-detail" title="關閉" onclick="closeDetail()">&times;</button>
+          <div><strong>${act.title}</strong></div>
+          <div style="margin-top:0.5rem;">${act.detail}</div>
+        `;
+        activityDetailDiv.classList.add('active');
+        activityDetailDiv.scrollIntoView({behavior: "smooth"});
+      });
+      activityListDiv.appendChild(div);
+    });
+
+    // 關閉介紹
+    window.closeDetail = function() {
+      activityDetailDiv.classList.remove('active');
+      activityDetailDiv.innerHTML = '';
     };
 
-    // 查看介紹按鈕事件
-    document.getElementById("showIntroBtn").addEventListener("click", function() {
-      const select = document.getElementById("activity");
-      const introDiv = document.getElementById("activityIntro");
-      const value = select.value;
-      introDiv.textContent = activityDescriptions[value] || "無此活動介紹";
-      introDiv.classList.add("active");
+    // 分頁切換
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+        this.classList.add('active');
+        document.getElementById('tab-' + this.dataset.tab).classList.add('active');
+        // 關閉介紹
+        closeDetail();
+      });
     });
 
-    // 切換活動時自動隱藏介紹
-    document.getElementById("activity").addEventListener("change", function() {
-      document.getElementById("activityIntro").classList.remove("active");
-      document.getElementById("activityIntro").textContent = "";
-    });
+    // 立即報名按鈕切換分頁並選擇活動
+    window.switchToRegister = function(activityId) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelector('.tab-btn[data-tab="register"]').classList.add('active');
+      document.getElementById('tab-register').classList.add('active');
+      // 設定下拉選單
+      document.getElementById('activity').value = activityId;
+      // 關閉介紹
+      closeDetail();
+      // 滾動到表單
+      document.getElementById('registerForm').scrollIntoView({behavior: "smooth"});
+    };
 
     // 報名表單送出
     document.getElementById("registerForm").addEventListener("submit", async (e) => {
